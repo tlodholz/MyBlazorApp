@@ -1,0 +1,121 @@
+﻿@page "/projects/edit/{id:int}"
+
+<h3>Project Edit</h3>
+
+@if (project != null)
+{
+    <EditForm Model="project">
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Project Id</label>
+            </div>
+            <div class="col-6">
+                <span>@project.Id</span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Start Date</label>
+            </div>
+            <div class="col-6">
+                <InputDate @bind-Value="project.StartDate"></InputDate>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">End Date</label>
+            </div>
+            <div class="col-6">
+                <InputDate @bind-Value="project.EndDate"></InputDate>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Name</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.Name" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Description</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.Description" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Address1</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.Address1" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Address2</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.Address2" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">City</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.City" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">State</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.State" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">City Image</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.CityImage" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">House Image</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.HouseImage" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <label class="col-form-label">Residential</label>
+            </div>
+            <div class="col-6">
+                <InputCheckbox @bind-Value="project.IsResidential" class="form-check-input"></InputCheckbox>
+            </div>
+        </div>
+        
+    </EditForm>
+
+    <a href="/projects" class="btn btn-primary">Back to Projects</a>
+}
+
+
+@code {
+    [Parameter]
+    public int Id  { get; set; }
+
+    private Project? project;
+
+    protected override void OnParametersSet()
+    {
+        project = ProjectRepository.GetProjectById(this.Id);
+    }
+}

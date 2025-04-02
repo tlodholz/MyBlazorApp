@@ -1,0 +1,46 @@
+﻿<h3>Projects List</h3>
+
+<ul>
+    @foreach (Project project in projects)
+    {
+        <li>
+            @(String.Format("{0}, {1}, {2}, {3}", project.Name, project.Description, project.City, project.State))
+            <a href="/projects/details/@project.Id" class="btn btn-link">Details</a>
+            <a href="/projects/edit/@project.Id" class="btn btn-link">Edit</a>
+        </li>
+    }
+</ul>
+
+<br />
+
+@foreach (Project city in distintCityProjects)
+{
+    <div class="card" style="width: 18rem;">
+        <img src=@("images/cities/" + city.CityImage) class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button type="button" class="btn btn-primary">@city.City</button>
+        </div>
+    </div>
+
+    <br />
+}
+
+@code {
+    List<Project> projects = ProjectRepository.GetProjects();
+
+    // filters the list of all projects into a distinct list of cities.     
+    List<Project> distintCityProjects = GetDistinctCityProjects();
+    private static List<Project> GetDistinctCityProjects()
+    {
+        // returns a list of all projects. testing only.
+        List<Project> projects = ProjectRepository.GetProjects();
+        
+        List<Project> distinctCityObjects = projects
+             .GroupBy(c => c.City) // Group by city
+             .Select(g => g.First()) // Select the first object from each group
+             .ToList();
+        return distinctCityObjects;
+    }
+}

@@ -1,0 +1,138 @@
+﻿@page "/projects/details/{id:int}"
+
+<h3>Edit Project</h3>
+
+@if (project != null)
+{
+    <div class="table-container">
+        <h1 class="table-title">My Two-Column Table</h1>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>@project.Id</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>@project.Name</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>@project.Description</td>
+                </tr>
+                <tr>
+                    <td>Address1</td>
+                    <td>@project.Address1</td>
+                </tr>
+                <tr>
+                    <td>Address2</td>
+                    <td>@project.Address2</td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td>@project.City</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>@project.State</td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>@project.State</td>
+                </tr>
+                <tr>
+                    <td>PostalCode</td>
+                    <td>@project.PostalCode</td>
+                </tr>
+                <tr>
+                    <td>CityImage</td>
+                    <td>@project.CityImage</td>
+                </tr>
+                <tr>
+                    <td>HouseImage</td>
+                    <td>@project.HouseImage</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br />
+
+    <a href="/projects" class="btn btn-primary">Back to Projects</a>
+}
+
+<style>
+    /* Style for the table container */
+    .table-container {
+        text-align: center;
+        margin: 20px;
+    }
+
+    /* Style for the title */
+    .table-title {
+        color: #008000; /* Green */
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #add8e6; /* Light blue */
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    /* Style for the table */
+    .styled-table {
+        width: 50%;
+        margin: 0 auto;
+        border-collapse: collapse;
+    }
+
+        /* Header row style */
+        .styled-table thead th {
+            background-color: #008000; /* Green */
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        /* Body row style */
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        /* Cell style */
+        .styled-table td, .styled-table th {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Alternate row coloring */
+        .styled-table tbody tr:nth-child(even) {
+            background-color: #f3f3f3;
+        }
+
+        /* Hover effect */
+        .styled-table tbody tr:hover {
+            background-color: #add8e6; /* Light blue */
+        }
+</style>
+
+
+@code {
+
+    // grab the id from the URL
+    [Parameter]
+    public int Id { get; set; }
+
+    private Project? project; 
+
+    protected override void OnParametersSet()
+    {
+        project = ProjectRepository.GetProjectById(Id);
+    }
+}
+

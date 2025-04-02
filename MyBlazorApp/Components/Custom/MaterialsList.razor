@@ -1,0 +1,33 @@
+﻿<h3>Materials List</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product Number</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var material in materialsList)
+            {
+                <tr>
+                    <td>@material.ProductNumber</td>
+                    <td>@material.Category</td>
+                    <td>@material.Description</td>
+                    <td>@material.Quantity</td>
+                    <td>@material.Price.ToString("C")</td>
+                    <td style="@(material.Total > 1000 ? "background-color: yellow; color: red;" : "")">@material.Total.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+@code {
+    List<MaterialItem> materialsList = MaterialRepository.BuildMaterialList();
+
+}

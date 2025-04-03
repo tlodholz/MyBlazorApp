@@ -1,10 +1,13 @@
-﻿@page "/projects/edit/{id:int}"
+﻿ @page "/projects/edit/{id:int}"
 
 <h3>Project Edit</h3>
 
 @if (project != null)
 {
-    <EditForm Model="project">
+    <EditForm Model="project" FormName="formProject" OnSubmit="Submit">
+
+        <InputNumber @bind-Value="project.Id" hidden></InputNumber>
+        
         <div class="row mb-3">
             <div class="col-2">
                 <label class="col-form-label">Project Id</label>
@@ -79,6 +82,14 @@
         </div>
         <div class="row mb-3">
             <div class="col-2">
+                <label class="col-form-label">Postal</label>
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="project.PostalCode" class="form-control"></InputText>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
                 <label class="col-form-label">City Image</label>
             </div>
             <div class="col-6">
@@ -102,7 +113,12 @@
             </div>
         </div>
         
+        <br />
+        <button class="btn btn-primary" type="submit">Update</button>
+        
     </EditForm>
+
+    <br />
 
     <a href="/projects" class="btn btn-primary">Back to Projects</a>
 }
@@ -112,10 +128,16 @@
     [Parameter]
     public int Id  { get; set; }
 
-    private Project? project;
+    [SupplyParameterFromForm(FormName = "formProject")]
+    private Project? project { get; set; }
 
     protected override void OnParametersSet()
     {
-        project = ProjectRepository.GetProjectById(this.Id);
+        project ??= ProjectRepository.GetProjectById(this.Id);
+    }
+
+    private void Submit()
+    {
+        //ProjectRepository.UpdateProject(project.Id, project);
     }
 }

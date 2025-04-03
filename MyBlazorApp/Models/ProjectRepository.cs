@@ -8,6 +8,8 @@ namespace MyBlazorApp.Models
 
         public static List<Project> GetProjects()
         {
+            _projects.Clear();
+            
             _projects.Add(new Project
             {
                 Id = 1,
@@ -129,6 +131,13 @@ namespace MyBlazorApp.Models
         {
             Project project = _projects.FirstOrDefault(p => p.Id == id);
             return project;
+        }
+
+        public static void UpdateProject(int id, Project project)
+        {
+            Project proj = _projects.FirstOrDefault(p => p.Id == id);
+            _projects.Remove(proj);
+            _projects.Add(project);
         }
     }
 }

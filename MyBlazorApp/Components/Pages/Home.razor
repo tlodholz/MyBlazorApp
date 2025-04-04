@@ -1,5 +1,35 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components
 
-<PageTitle>Home</PageTitle>
+<div class="container mt-4">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Project Tracker</h1>
+        <p class="lead">Easily manage your customers, projects, tasks, and materials all in one place.</p>
+        <hr class="my-4">
+        <p>Navigate through the app to add and track your records with ease.</p>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-3">
+            <button class="btn btn-primary btn-lg btn-block" @onclick="ButtonClicked">New Customer</button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-success btn-lg btn-block" @onclick="ButtonClicked">New Project</button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-warning btn-lg btn-block" @onclick="ButtonClicked">Add Materials</button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-info btn-lg btn-block" @onclick="ButtonClicked">Add Task</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void ButtonClicked()
+    {
+        
+    }
+}
 
 

@@ -4,7 +4,10 @@
 
 @if (project != null)
 {
-    <EditForm Model="project" FormName="formProject" OnSubmit="Submit">
+    <EditForm Model="project" FormName="formProject" OnValidSubmit="Submit">
+
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
 
         <InputNumber @bind-Value="project.Id" hidden></InputNumber>
         
@@ -15,6 +18,9 @@
             <div class="col-6">
                 <span>@project.Id</span>
             </div>
+            <div class="col">
+                <ValidationMessage For="() => project.Id"></ValidationMessage>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
@@ -22,6 +28,9 @@
             </div>
             <div class="col-6">
                 <InputDate @bind-Value="project.StartDate"></InputDate>
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => project.StartDate"></ValidationMessage>
             </div>
         </div>
         <div class="row mb-3">
@@ -31,6 +40,9 @@
             <div class="col-6">
                 <InputDate @bind-Value="project.EndDate"></InputDate>
             </div>
+            <div class="col">
+                <ValidationMessage For="() => project.EndDate"></ValidationMessage>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
@@ -38,6 +50,9 @@
             </div>
             <div class="col-6">
                 <InputText @bind-Value="project.Name" class="form-control"></InputText>
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => project.Name"></ValidationMessage>
             </div>
         </div>
         <div class="row mb-3">
@@ -47,6 +62,9 @@
             <div class="col-6">
                 <InputText @bind-Value="project.Description" class="form-control"></InputText>
             </div>
+            <div class="col">
+                <ValidationMessage For="() => project.Description"></ValidationMessage>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
@@ -54,6 +72,9 @@
             </div>
             <div class="col-6">
                 <InputText @bind-Value="project.Address1" class="form-control"></InputText>
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => project.Address1"></ValidationMessage>
             </div>
         </div>
         <div class="row mb-3">
@@ -63,6 +84,9 @@
             <div class="col-6">
                 <InputText @bind-Value="project.Address2" class="form-control"></InputText>
             </div>
+            <div class="col">
+               
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
@@ -70,6 +94,9 @@
             </div>
             <div class="col-6">
                 <InputText @bind-Value="project.City" class="form-control"></InputText>
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => project.City"></ValidationMessage>
             </div>
         </div>
         <div class="row mb-3">
@@ -79,6 +106,9 @@
             <div class="col-6">
                 <InputText @bind-Value="project.State" class="form-control"></InputText>
             </div>
+            <div class="col">
+                <ValidationMessage For="() => project.State"></ValidationMessage>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
@@ -86,6 +116,9 @@
             </div>
             <div class="col-6">
                 <InputText @bind-Value="project.PostalCode" class="form-control"></InputText>
+            </div>
+            <div class="col">
+                <ValidationMessage For="() => project.PostalCode"></ValidationMessage>
             </div>
         </div>
         <div class="row mb-3">
@@ -95,6 +128,9 @@
             <div class="col-6">
                 <InputText @bind-Value="project.CityImage" class="form-control"></InputText>
             </div>
+            <div class="col">
+                <ValidationMessage For="() => project.CityImage"></ValidationMessage>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
@@ -103,6 +139,9 @@
             <div class="col-6">
                 <InputText @bind-Value="project.HouseImage" class="form-control"></InputText>
             </div>
+            <div class="col">
+                <ValidationMessage For="() => project.HouseImage"></ValidationMessage>
+            </div>
         </div>
         <div class="row mb-3">
             <div class="col-2">
@@ -110,6 +149,9 @@
             </div>
             <div class="col-6">
                 <InputCheckbox @bind-Value="project.IsResidential" class="form-check-input"></InputCheckbox>
+            </div>
+            <div class="col">
+                
             </div>
         </div>
         

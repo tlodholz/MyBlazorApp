@@ -1,7 +1,7 @@
-﻿
+﻿@using System.Text.Json
+@inject HttpClient HttpClient
 
-
-<EditForm Model="customer" FormName="formAddCustomer" OnValidSubmit="Submit">
+<EditForm Model="customer" FormName="formAddCustomer" OnValidSubmit="PostCustomer">
 
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
@@ -44,10 +44,10 @@
             <label class="col-form-label">Phone</label>
         </div>
         <div class="col-6">
-            <InputText @bind-Value="customer.PhoneNumber" class="form-control"></InputText>
+            <InputText @bind-Value="customer.Phone" class="form-control"></InputText>
         </div>
         <div class="col">
-            <ValidationMessage For="() => customer.PhoneNumber"></ValidationMessage>
+            <ValidationMessage For="() => customer.Phone"></ValidationMessage>
         </div>
     </div>
     <br />
@@ -59,7 +59,9 @@
 
 <a href="/projects" class="btn btn-primary">Back to Projects</a>
 
+<span>@statusMessage</span>
 
+<span>Json payload: @teststring</span>
 
 @code {
     [Parameter]
@@ -72,9 +74,23 @@
     {
         customer ??= new Customer();
     }
+    private string teststring = string.Empty;
+    private string statusMessage = string.Empty;
 
-    private void Submit()
+    private async Task PostCustomer()
     {
-        
+        var response = await HttpClient.PostAsJsonAsync("api/customers", customer);
+
+        teststring = (JsonSerializer.Serialize(customer));
+
+        if (response.IsSuccessStatusCode)
+        {
+            statusMessage = "Customer created successfully!";
+        }
+        else
+        {
+            statusMessage = "Failed to create customer.";
+        }
     }
+
 }

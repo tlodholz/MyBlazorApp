@@ -21,7 +21,7 @@ namespace MyBlazorApp.Models
 
         [Required]
         [Phone] // Ensures valid phone number format
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
 
     }
 }

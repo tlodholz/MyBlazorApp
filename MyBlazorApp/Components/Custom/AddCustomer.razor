@@ -6,6 +6,7 @@
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
 
+    <InputNumber @bind-Value="customer.Id" hidden></InputNumber>
     <div class="row mb-3">
         <div class="col-2">
             <label class="col-form-label">First Name</label>
@@ -50,21 +51,14 @@
             <ValidationMessage For="() => customer.Phone"></ValidationMessage>
         </div>
     </div>
-    <br />
-    <br />
-    <span>@statusMessage</span>
-    <br />
-    <br />
-    <span>Json payload: @teststring</span>
-    <br />
+    <br /><br />
     <button class="btn btn-primary" type="submit">Add</button>
-
+    <a href="/projects" class="btn btn-primary">Back to Projects</a>
+    <br /><br />
+    <span>@statusMessage</span>
+    <br /><br />
+    <span>Json payload: @teststring</span>
 </EditForm>
-
-<br />
-
-<a href="/projects" class="btn btn-primary">Back to Projects</a>
-
 
 @code {
     [Parameter]
@@ -82,7 +76,7 @@
 
     private async Task PostCustomer()
     {
-      try
+        try
         {
             var response = await HttpClient.PostAsJsonAsync("api/customers", customer);
 
@@ -91,6 +85,9 @@
             if (response.IsSuccessStatusCode)
             {
                 statusMessage = "Customer created successfully!";
+
+                //the api returns an updated customer with the assigned ID. This will make sure we have the correct customer.
+                customer = await response.Content.ReadFromJsonAsync<Customer>();
             }
             else
             {

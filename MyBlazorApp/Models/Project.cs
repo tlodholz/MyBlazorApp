@@ -7,6 +7,8 @@ namespace MyBlazorApp.Models
     {
         public int Id { get; set; }
 
+        public int CustomerId { get; set; }
+
         [Required]
         public DateOnly StartDate { get; set; }
 

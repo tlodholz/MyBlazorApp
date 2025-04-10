@@ -11,17 +11,7 @@
 
         <InputNumber @bind-Value="project.Id" hidden></InputNumber>
         
-        <div class="row mb-3">
-            <div class="col-2">
-                <label class="col-form-label">Project Id</label>
-            </div>
-            <div class="col-6">
-                <span>@project.Id</span>
-            </div>
-            <div class="col">
-                <ValidationMessage For="() => project.Id"></ValidationMessage>
-            </div>
-        </div>
+
         <div class="row mb-3">
             <div class="col-2">
                 <label class="col-form-label">Start Date</label>
@@ -178,8 +168,14 @@
         project ??= ProjectRepository.GetProjectById(this.Id);
     }
 
+    private async Task SubmitProject()
+    {
+       
+    }
+
+
     private void Submit()
     {
-        //ProjectRepository.UpdateProject(project.Id, project);
+
     }
 }

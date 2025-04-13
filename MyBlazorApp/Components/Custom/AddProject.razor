@@ -7,8 +7,18 @@
     <ValidationSummary></ValidationSummary>
 
     <InputNumber @bind-Value="project.Id" hidden></InputNumber>
-    <InputNumber @bind-Value="project.CustomerId" hidden></InputNumber>
 
+    <div class="row mb-3">
+        <div class="col-2">
+            <label class="col-form-label">CustomerId</label>
+        </div>
+        <div class="col-6">
+            <InputNumber @bind-Value="project.CustomerId"></InputNumber>
+        </div>
+        <div class="col">
+            <ValidationMessage For="() => project.CustomerId"></ValidationMessage>
+        </div>
+    </div>
     <div class="row mb-3">
         <div class="col-2">
             <label class="col-form-label">Start Date</label>
@@ -153,14 +163,16 @@
 
 @code {
     [Parameter]
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     [SupplyParameterFromForm(FormName = "formAddProject")]
     private Project? project { get; set; }
 
     protected override void OnParametersSet()
     {
-        project ??= new Project();
+        DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
+        project ??= new Project{ StartDate = currentDate, EndDate = currentDate };
+        
     }
     private string teststring = string.Empty;
     private string statusMessage = string.Empty;
@@ -171,7 +183,8 @@
     {
         try
         {
-            var response = await HttpClient.PostAsJsonAsync("api/projects", project);
+            
+            var response = await HttpClient.PostAsJsonAsync($"api/projects/{project.CustomerId}", project);
 
             teststring = (JsonSerializer.Serialize(project));
 
@@ -181,7 +194,7 @@
             }
             else
             {
-                statusMessage = "Failed to create project.";
+                statusMessage = "Failed to create project. ";
             }
         }
         catch (HttpRequestException ex)

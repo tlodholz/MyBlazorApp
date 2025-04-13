@@ -1,9 +1,13 @@
 ﻿@page "/customer/add"
+@inject NavigationManager NavigationManager
 
 <h3>Add Customer</h3>
 
 <AddCustomer></AddCustomer>
-
+<button class="btn btn-dark" type="button" @onclick="NavigateToProjectPage">Projects</button>
 @code {
-
+    private void NavigateToProjectPage()
+    {
+        NavigationManager.NavigateTo("/projects");
+    }
 }

@@ -1,12 +1,13 @@
 ﻿@using System.Text.Json
 @inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
 <EditForm Model="customer" FormName="formAddCustomer" OnValidSubmit="PostCustomer">
 
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
-
     <InputNumber @bind-Value="customer.Id" hidden></InputNumber>
+
     <div class="row mb-3">
         <div class="col-2">
             <label class="col-form-label">First Name</label>
@@ -53,11 +54,17 @@
     </div>
     <br /><br />
     <button class="btn btn-primary" type="submit">Add</button>
+    
+
     <a href="/projects" class="btn btn-primary">Back to Projects</a>
     <br /><br />
     <span>@statusMessage</span>
     <br /><br />
     <span>Json payload: @teststring</span>
+</EditForm>
+
+<EditForm Model="customer" FormName="formNavButton" OnSubmit="GoToProjects">
+    <button type="submit" class="btn btn-primary">Back to Projects</button>
 </EditForm>
 
 @code {
@@ -67,12 +74,18 @@
     [SupplyParameterFromForm(FormName = "formAddCustomer")]
     private Customer? customer { get; set; }
 
+    private string teststring = string.Empty;
+    private string statusMessage = string.Empty;
+
+    private void GoToProjects()
+    {
+        NavigationManager.NavigateTo("/projects");
+    }
+
     protected override void OnParametersSet()
     {
         customer ??= new Customer();
     }
-    private string teststring = string.Empty;
-    private string statusMessage = string.Empty;
 
     private async Task PostCustomer()
     {

@@ -1,5 +1,7 @@
-﻿
-@inject HttpClient HttpClient
+﻿@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+@attribute [StreamRendering]
 
 <h3>Customer List</h3>
 
@@ -35,9 +37,9 @@ else
                         <div class="btn-group">
                         <EditForm 
                             Model="customer" 
-                            FormName="@($"form-details-customer-{customer.Id}")"
-                            OnSubmit="@(()=>{ShowDetails(customer.Id); })">
-                            <button type="submit" class="btn btn-primary"> Show</button>
+                            FormName="@($"form-projects-customer-{customer.Id}")"
+                            OnSubmit="@(()=>{ShowProjects(customer.Id); })">
+                            <button type="submit" class="btn btn-primary"> Projects</button>
                         </EditForm>
                         <EditForm 
                             Model="customer"
@@ -75,10 +77,12 @@ else
         }
     }
 
-    private void ShowDetails(int id)
+    private void ShowProjects(int id)
     {
         Console.WriteLine($"Show details for customer with ID: {id}");
         // Add logic to navigate to the details page or display a modal
+
+        NavigationManager.NavigateTo($"/projects/list/{id}");
     }
 
     private void EditCustomer(int id)

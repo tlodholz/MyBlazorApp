@@ -1,0 +1,11 @@
+﻿@page "/projects/list/{customerId:int}"
+
+<h3>Customer Projects</h3>
+
+<ListCustomerProjects CustomerId="customerId"></ListCustomerProjects>
+
+@code {
+    [Parameter]
+    public int customerId { get; set; }
+
+}

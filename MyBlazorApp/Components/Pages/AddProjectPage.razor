@@ -1,8 +1,8 @@
-﻿@page "/product/add"
+﻿@page "/project/add/{customerId:int}"
 
-<h3>Add Project</h3>
-<AddProject></AddProject>
+<AddProject customerId="customerId"></AddProject>
 
 @code {
-
+    [Parameter]
+    public int customerId { get; set; }
 }

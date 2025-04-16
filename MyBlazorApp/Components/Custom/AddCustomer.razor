@@ -2,8 +2,9 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<EditForm Model="customer" FormName="formAddCustomer" OnValidSubmit="PostCustomer">
+<h3>Add New Customer</h3>
 
+<EditForm Model="customer" FormName="formAddCustomer" OnValidSubmit="PostCustomer">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
     <InputNumber @bind-Value="customer.Id" hidden></InputNumber>
@@ -53,18 +54,15 @@
         </div>
     </div>
     <br /><br />
-    <button class="btn btn-primary" type="submit">Add</button>
-    
-
-    <a href="/projects" class="btn btn-primary">Back to Projects</a>
+    <div class="btn-group">
+        <button class="btn btn-primary" type="submit">Add</button>&nbsp;
+        <a href="/projects" class="btn btn-primary">Back to Projects</a>
+    </div>
+ 
     <br /><br />
     <span>@statusMessage</span>
     <br /><br />
     <span>Json payload: @teststring</span>
-</EditForm>
-
-<EditForm Model="customer" FormName="formNavButton" OnSubmit="GoToProjects">
-    <button type="submit" class="btn btn-primary">Back to Projects</button>
 </EditForm>
 
 @code {
@@ -100,7 +98,8 @@
                 statusMessage = "Customer created successfully!";
 
                 //the api returns an updated customer with the assigned ID. This will make sure we have the correct customer.
-                customer = await response.Content.ReadFromJsonAsync<Customer>();
+                //customer = await response.Content.ReadFromJsonAsync<Customer>();
+                customer = new Customer();
             }
             else
             {

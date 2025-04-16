@@ -1,6 +1,8 @@
 ﻿@using System.Text.Json
 @inject HttpClient HttpClient
 
+<h3>Add Project</h3>
+
 <EditForm Model="project" FormName="formAddProject" OnValidSubmit="PostProject">
 
     <DataAnnotationsValidator></DataAnnotationsValidator>
@@ -163,7 +165,7 @@
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public int customerId { get; set; }
 
     [SupplyParameterFromForm(FormName = "formAddProject")]
     private Project? project { get; set; }
@@ -171,13 +173,13 @@
     protected override void OnParametersSet()
     {
         DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
-        project ??= new Project{ StartDate = currentDate, EndDate = currentDate };
-        
+        project ??= new Project { StartDate = currentDate, EndDate = currentDate, CustomerId = customerId };
+
     }
     private string teststring = string.Empty;
     private string statusMessage = string.Empty;
 
-    [Parameter] public EventCallback<string> OnTabChange { get; set; }
+    //[Parameter] public EventCallback<string> OnTabChange { get; set; }
 
     private async Task PostProject()
     {

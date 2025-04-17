@@ -1,16 +1,19 @@
-﻿@using System.Text.Json
+﻿
+@using System.Text.Json
+@using System.Text
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<h3>Add Project</h3>
-<EditForm Model="customer"
+<h3>Edit Project</h3>
+
+<EditForm Model="project"
           FormName="form-back-project"
-          OnSubmit="@(()=>{NavigateToProjectList(customer.Id); })">
+          OnSubmit="@(()=>{NavigateToProjectList(project.CustomerId); })">
     <button type="submit" class="btn btn-dark"> Back to Projects</button>
 </EditForm>
 <br />
 
-<EditForm Model="project" FormName="formAddProject" OnValidSubmit="PostProject">
+<EditForm Model="project" FormName="formEditProject" OnValidSubmit="HandleUpdateProject">
 
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
@@ -160,21 +163,14 @@
 <br />
 <span>Json payload: @teststring</span>
 
+
 @code {
+    [SupplyParameterFromForm(FormName = "formEditProject")]
+    private Project? project { get; set; } = new Project();
+
     [Parameter]
-    public int customerId { get; set; }
+    public int projectId { get; set; }
 
-    [SupplyParameterFromForm(FormName = "formAddProject")]
-    private Project? project { get; set; }
-
-    private Customer? customer { get; set; }
-
-    protected override void OnParametersSet()
-    {
-        DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
-        project ??= new Project { StartDate = currentDate, EndDate = currentDate, CustomerId = customerId };
-        customer ??= new Customer { Id = customerId };
-    }
     private string teststring = string.Empty;
     private string statusMessage = string.Empty;
 
@@ -183,37 +179,37 @@
         NavigationManager.NavigateTo($"/projects/list/{id}");
     }
 
-    private async Task PostProject()
+    protected override async Task OnParametersSetAsync()
     {
-        try
+        if (project.Name == null)
         {
-            var response = await HttpClient.PostAsJsonAsync($"api/projects/{project.CustomerId}", project);
-
-            teststring = (JsonSerializer.Serialize(project));
-
-            if (response.IsSuccessStatusCode)
-            {
-                statusMessage = "Project created successfully!";
-              //  NavigationManager.NavigateTo($"/projects/list/{project.CustomerId}");
-            }
-            else
-            {
-                statusMessage = "Failed to create project. ";
-            }
+            project = await HttpClient.GetFromJsonAsync<Project>($"/api/projects/{projectId}");
         }
-        catch (HttpRequestException ex)
+    }
+
+    private async Task HandleUpdateProject()
+    {
+        await UpdateProjectAsync(project);
+    }
+
+    public async Task<bool> UpdateProjectAsync(Project updatedProject)
+    {
+        // Make the PUT request
+        var response = await HttpClient.PutAsJsonAsync($"api/projects/{updatedProject.Id}", updatedProject);
+
+        // Check for success status code
+        if (response.IsSuccessStatusCode)
         {
-            // Handle network or connection errors
-            statusMessage = "The API is not running or cannot be reached.";
-            Console.WriteLine($"Error: {ex.Message}");
+            statusMessage = "Project updated successfully.";
+            return true;
         }
-        catch (Exception ex)
+        else
         {
-            // Handle unexpected errors
-            statusMessage = "An unexpected error occurred.";
-            Console.WriteLine($"Error: {ex.Message}");
+            statusMessage = $"Failed to update project. Status code: {response.StatusCode}";
+            return false;
         }
     }
 
 }
+
 

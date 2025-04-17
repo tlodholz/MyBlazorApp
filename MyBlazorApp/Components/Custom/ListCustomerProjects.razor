@@ -1,9 +1,6 @@
 ﻿@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
-
 @attribute [StreamRendering]
-
-<h3>Customer Projects List</h3>
 
 <EditForm Model="customer"
           FormName="@($"form-add-project")"
@@ -82,8 +79,8 @@ else
 
         try
         {
-            // Fetch projects with the customer id from the API endpoint
-            projects = await HttpClient.GetFromJsonAsync<List<Project>>($"/api/projects/by-customer/{CustomerId}");
+            // Fetch a list of projects with the customer id from the API endpoint
+            projects ??= await HttpClient.GetFromJsonAsync<List<Project>>($"/api/projects/by-customer/{CustomerId}");
         }
         catch (Exception ex)
         {
@@ -93,7 +90,7 @@ else
 
     private void NavigateToAddProject(int id)
     {
-        NavigationManager.NavigateTo($"/project/add/{id}");
+        NavigationManager.NavigateTo($"/projects/add/{id}");
     }
 
     private void ProjectDetails(int id)
@@ -103,7 +100,7 @@ else
 
     private void EditProject(int id)
     {
-
+        NavigationManager.NavigateTo($"/projects/edit/{id}");
     }
 
     private async Task HandleDeleteSubmit(int projectId)

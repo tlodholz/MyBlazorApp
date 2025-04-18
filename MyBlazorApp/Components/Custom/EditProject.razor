@@ -1,20 +1,29 @@
-﻿
-@using System.Text.Json
+﻿@using System.Text.Json
 @using System.Text
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
 <h3>Edit Project</h3>
 
-<EditForm Model="project"
-          FormName="form-back-project"
-          OnSubmit="@(()=>{NavigateToProjectList(project.CustomerId); })">
-    <button type="submit" class="btn btn-dark"> Back to Projects</button>
-</EditForm>
+<div class="btn-group">
+    <EditForm Model="project"
+              FormName="form-back-projects"
+              OnSubmit="@(()=>{NavigateToCustomerList(); })">
+        <button type="submit" class="btn btn-dark"> Customer List</button>
+    </EditForm>
+    &nbsp;
+    <EditForm Model="project"
+              FormName="form-back-project"
+              OnSubmit="@(()=>{NavigateToProjectList(project.CustomerId); })">
+        <button type="submit" class="btn btn-dark"> Back to Projects</button>
+    </EditForm>
+
+</div>
+
+<br />
 <br />
 
-<EditForm Model="project" FormName="formEditProject" OnValidSubmit="HandleUpdateProject">
-
+<EditForm Model="project" FormName="formEditProject" OnValidSubmit="HandleUpdateProject" Enhance="true">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <ValidationSummary></ValidationSummary>
 
@@ -179,6 +188,11 @@
         NavigationManager.NavigateTo($"/projects/list/{id}");
     }
 
+    private void NavigateToCustomerList()
+    {
+        NavigationManager.NavigateTo($"/customer/list");
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         if (project.Name == null)
@@ -196,6 +210,7 @@
     {
         // Make the PUT request
         var response = await HttpClient.PutAsJsonAsync($"api/projects/{updatedProject.Id}", updatedProject);
+        teststring = (JsonSerializer.Serialize(updatedProject));
 
         // Check for success status code
         if (response.IsSuccessStatusCode)

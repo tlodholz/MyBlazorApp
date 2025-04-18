@@ -1,0 +1,8 @@
+﻿@page "/customer/edit/{customerId:int}"
+
+<EditCustomer customerID="@customerId"></EditCustomer>
+
+@code {
+    [Parameter]
+    public int customerId { get; set; }
+}

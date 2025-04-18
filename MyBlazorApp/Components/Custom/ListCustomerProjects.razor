@@ -48,17 +48,17 @@ else
                             FormName="@($"form-project-details-{project.Id}")"
                             OnSubmit="@(()=>{ProjectDetails(project.Id); })">
                             <button type="submit" class="btn btn-primary"> Details</button>
-                        </EditForm>
+                            </EditForm>    &nbsp;
                         <EditForm Model="project"
                             FormName="@($"form-projects-edit-{project.Id}")"
                             OnSubmit="@(()=>{EditProject(project.Id); })">
                             <button type="submit" class="btn btn-dark"> Edit</button>
-                        </EditForm>
+                            </EditForm>    &nbsp;
                         <EditForm Model="project"
                             FormName="@($"form-project-delete-{project.Id}")"
                             OnSubmit="@(() => HandleDeleteSubmit(project.Id))">
                             <button type="submit" class="btn btn-danger"> Delete</button>
-                        </EditForm>
+                            </EditForm>    &nbsp;
                         </div>
                     </td>
                 </tr>

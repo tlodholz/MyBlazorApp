@@ -1,7 +1,6 @@
 ﻿@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
-
-@attribute [StreamRendering]
+@rendermode InteractiveServer
 
 <h3>Customer List</h3>
 
@@ -15,6 +14,12 @@ else if (!customers.Any())
 }
 else
 {
+    <div class="sorting-options">
+        <input type="radio" value="FirstName" @onchange="HandleSortChange" checked="@(SelectedSort == "FirstName")" /> First Name
+        <input type="radio" value="LastName" @onchange="HandleSortChange" checked="@(SelectedSort == "LastName")" /> Last Name
+        <input type="radio" value="Email" @onchange="HandleSortChange" checked="@(SelectedSort == "Email")" /> Email
+    </div>
+    <input type="text" @bind="SearchText" placeholder="Search customers..." />
     <table class="table">
         <thead>
             <tr>
@@ -26,7 +31,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var customer in customers)
+            @foreach (var customer in SortedAndFilteredCustomers.Skip((CurrentPage - 1) * PageSize).Take(PageSize))
             {
                 <tr>
                     <td>@customer.FirstName</td>
@@ -35,34 +40,42 @@ else
                     <td>@customer.Email</td>
                     <td>
                         <div class="btn-group">
-                        <EditForm 
-                            Model="customer" 
-                            FormName="@($"form-projects-customer-{customer.Id}")"
-                            OnSubmit="@(()=>{ShowProjects(customer.Id); })">
-                            <button type="submit" class="btn btn-primary"> Projects</button>
-                            </EditForm>    &nbsp;
-                        <EditForm 
-                            Model="customer"
-                            FormName="@($"form-edit-customer-{customer.Id}")"
-                            OnSubmit="@(()=>{EditCustomer(customer.Id); })">
-                            <button type="submit" class="btn btn-dark"> Edit</button>
-                            </EditForm>    &nbsp;
-                        <EditForm 
-                            Model="customer"
-                            FormName="@($"form-delete-customer-{customer.Id}")"
-                            OnSubmit="@(() => HandleDeleteSubmit(customer.Id))">
-                            <button type="submit" class="btn btn-danger"> Delete</button>
-                            </EditForm>    &nbsp;
+                            <EditForm Model="customer" FormName="@($"form-projects-customer-{customer.Id}")"
+                                      OnSubmit="@(() => ShowProjects(customer.Id))">
+                                <button type="submit" class="btn btn-primary">Projects</button>
+                            </EditForm>
+                            &nbsp;
+                            <EditForm Model="customer" FormName="@($"form-edit-customer-{customer.Id}")"
+                                      OnSubmit="@(() => EditCustomer(customer.Id))">
+                                <button type="submit" class="btn btn-dark">Edit</button>
+                            </EditForm>
+                            &nbsp;
+                            <EditForm Model="customer" FormName="@($"form-delete-customer-{customer.Id}")"
+                                      OnSubmit="@(() => HandleDeleteSubmit(customer.Id))">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </EditForm>
+                            &nbsp;
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
+    <div class="pagination-controls">
+        <button @onclick="PreviousPage" disabled="@(CurrentPage == 1)">Previous</button>
+        @for (int i = 1; i <= TotalPages; i++)
+        {
+            var pageNumber = i; // Create a scoped variable to avoid capturing issues
+            <button @onclick="() => GoToPage(pageNumber)" class="@(CurrentPage == pageNumber ? "active" : "")">@pageNumber</button>
+        }
+        <button @onclick="NextPage" disabled="@(CurrentPage == TotalPages)">Next</button>
+    </div>
+
 }
 
 @code {
-    private List<Customer> customers;
+    private List<Customer> customers = new List<Customer>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,6 +89,51 @@ else
             Console.WriteLine($"Error fetching customers: {ex.Message}");
         }
     }
+
+    // PAGINATION AND SORTING
+
+    // sorting
+    private string SelectedSort = "FirstName";
+
+    // pagination
+    private int CurrentPage { get; set; } = 1;
+    private int PageSize { get; set; } = 10; // Adjust the number of items per page
+    private int TotalPages => (int)Math.Ceiling((double)customers.Count / PageSize);
+
+    // search bar
+    private string SearchText { get; set; } = "";
+
+    private IEnumerable<Customer> SortedAndFilteredCustomers => customers
+        .OrderBy(c => SelectedSort == "FirstName" ? c.FirstName :
+                  SelectedSort == "LastName" ? c.LastName :
+                  c.Email) // Sort first
+        .Where(c => string.IsNullOrEmpty(SearchText) ||
+               c.FirstName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+               c.LastName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+               c.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase)); // Filter after sorting
+
+    // pagination button events
+    private void HandleSortChange(ChangeEventArgs e)
+    {
+        SelectedSort = e.Value.ToString();
+    }
+
+    private void GoToPage(int page)
+    {
+        CurrentPage = page;
+    }
+
+    private void PreviousPage()
+    {
+        if (CurrentPage > 1) CurrentPage--;
+    }
+
+    private void NextPage()
+    {
+        if (CurrentPage < TotalPages) CurrentPage++;
+    }
+
+    // CRUD OPERATIONS FOR LINE ITEM BUTTONS
 
     private void ShowProjects(int id)
     {

@@ -1,0 +1,8 @@
+﻿@page "/projects/assignments/list/{projectId:int}"
+
+<ListAssignments ProjectId="projectId"></ListAssignments>
+
+@code {
+    [Parameter]
+    public int projectId { get; set; }
+}

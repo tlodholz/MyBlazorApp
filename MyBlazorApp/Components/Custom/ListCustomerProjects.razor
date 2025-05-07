@@ -20,11 +20,11 @@ else if (!projects.Any())
 else
 {
     <div class="sorting-options">
-        <input type="radio" value="FirstName" @onchange="HandleSortChange" checked="@(SelectedSort == "StartDate")" /> Start Date
-        <input type="radio" value="LastName" @onchange="HandleSortChange" checked="@(SelectedSort == "EndDate")" /> End Date
-        <input type="radio" value="Email" @onchange="HandleSortChange" checked="@(SelectedSort == "Name")" /> Name
-        <input type="radio" value="Email" @onchange="HandleSortChange" checked="@(SelectedSort == "Description")" /> Description
-        <input type="radio" value="Email" @onchange="HandleSortChange" checked="@(SelectedSort == "City")" /> City
+        <input type="radio" value="StartDate" @onchange="HandleSortChange" checked="@(SelectedSort == "StartDate")" /> Start Date
+        <input type="radio" value="EndDate" @onchange="HandleSortChange" checked="@(SelectedSort == "EndDate")" /> End Date
+        <input type="radio" value="Name" @onchange="HandleSortChange" checked="@(SelectedSort == "Name")" /> Name
+        <input type="radio" value="Description" @onchange="HandleSortChange" checked="@(SelectedSort == "Description")" /> Description
+        <input type="radio" value="City" @onchange="HandleSortChange" checked="@(SelectedSort == "City")" /> City
     </div>
     <input type="text" @bind="SearchText" placeholder="Search projects..." />
     <table class="table">
